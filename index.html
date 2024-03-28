@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBGIS Bandar Lampung</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <script src="https://unpkg.com/leaflet-geosearch@latest/dist/bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                }
+            }
+        }
+    </script>
+</head>
+<body class="p-0 m-0">
+    <div class="w-full h-screen">
+        <nav class="bg-red-500 fixed w-full top-0 left-0" style="z-index: 1000;">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">WEBGIS KOTA BANDAR LAMPUNG</span>
+                </a>
+                <ul class="flex flex-row gap-2">
+                    <li>
+                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                            class="w-full bg-white hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between"
+                            type="button">
+                            Administrasi
+                            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-60">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <div class="flex items-center p-2 rounded"
+                                        data-geo="admin_kabkota">
+                                        <input id="checkbox-item-kabupaten" class="peta_data" type="checkbox" value="data_admin_kabupaten"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-kabupaten"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Kabupaten</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded  list-admin"
+                                        data-geo="admin_kec">
+                                        <input id="checkbox-item-kecamatan" class="peta_data" type="checkbox" value="data_admin_kecamatan"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-kecamatan"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Kecamatan</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <button id="dropdownAgriKultur" data-dropdown-toggle="dropdown-agri"
+                            class="w-full bg-white hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between"
+                            type="button">
+                            Agrikultur
+                            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <div id="dropdown-agri" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-60">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownAgriKultur">
+                                <li>
+                                    <div class="flex items-center p-2 rounded">
+                                        <input id="checkbox-item-ladang" class="peta_data" type="checkbox" value="data_agri_ladang"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-ladang"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Ladang</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded ">
+                                        <input id="checkbox-item-sawah" class="peta_data" type="checkbox" value="data_agri_sawah"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-sawah"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Sawah</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded">
+                                        <input id="checkbox-item-kebun" class="peta_data" type="checkbox" value="data_agri_kebun"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-kebun"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Kebun</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <button id="dropdownBangunan" data-dropdown-toggle="dropdown-bangunan"
+                            class="w-full bg-white hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between"
+                            type="button">
+                            Lokasi Bangunan
+                            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <div id="dropdown-bangunan" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-60">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownBangunan">
+                                <li>
+                                    <div class="flex items-center p-2 rounded">
+                                        <input id="checkbox-item-pemerintahan" class="peta_data" type="checkbox" value="data_pemerintahan"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-pemerintahan"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Pemerintahan</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded">
+                                        <input id="checkbox-item-olahraga" class="peta_data" type="checkbox" value="data_arena_olahraga"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-olahraga"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Arena OlahRaga</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded">
+                                        <input id="checkbox-item-pendidikan" class="peta_data" type="checkbox" value="data_pendidikan"
+                                            class="w-4 h-4 text-blue-600 bg-blue-500/hover:bg-gray-200 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-item-pendidikan"
+                                            class="w-full ms-2 text-sm font-medium rounded text-black">Pendidikan</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+               
+            </div>
+        </nav>
+        <div class="w-full h-[90vh] absolute bottom-0">
+            <div id="map" class="w-full h-full"></div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            var opm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            });
+            var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'
+            });
+            const openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+            });
+
+            const baseLayers = {
+                'OpenStreetMap': opm,
+                'OpenStreetMap.HOT': osmHOT,
+                'OpenTopoMap': openTopoMap
+            }
+            const providerOSM = new GeoSearch.OpenStreetMapProvider();
+
+            var map = L.map('map', {
+                center: [-5.398850, 105.268337],
+                zoom: 11,
+                layers: [opm],
+            });
+            const layerControl = L.control.layers(baseLayers).addTo(map);
+            var layerGroup = new L.LayerGroup();
+
+            const search = new GeoSearch.GeoSearchControl({
+                provider: providerOSM,
+            });
+            map.addControl(search);
+
+            const data_array = ['data_admin_kabupaten','data_admin_kecamatan'];
+            const data_bangunan = ['data_arena_olahraga','data_pemerintahan','data_pendidikan']
+            const data_layers = {};
+
+            data_bangunan.forEach((item)=>{
+                $.getJSON(`data/${item}.geojson`, function(data){
+                    data_layers[item] = L.geoJSON(data, {
+                        onEachFeature: function (feature, latlng) {
+                            var popupContent = "<b>Nama Tempat: </b>" + feature.properties.NAMOBJ + "<br>" +
+                                "<b>Jenis Tempat: </b>" + feature.properties.REMARK
+                            latlng.bindPopup(popupContent)
+                        }
+                    });
+                })
+            })
+
+            $.getJSON(`data/data_agri_sawah.geojson`, function (data) {
+                data_layers['data_agri_sawah'] = L.geoJSON(data, {
+                    style: function (feature) {
+                        return {
+                            color: 'black',
+                            weight: 0.8,
+                            opacity: 0.5,
+                            fillOpacity: 0.5,
+                            fillColor: 'yellow'
+                        };
+                    }
+                });
+            });
+            $.getJSON(`data/data_agri_kebun.geojson`, function (data) {
+                data_layers['data_agri_kebun'] = L.geoJSON(data, {
+                    style: function (feature) {
+                        return {
+                            color: 'black',
+                            weight: 0.8,
+                            opacity: 0.5,
+                            fillOpacity: 0.5,
+                            fillColor: 'green'
+                        };
+                    }
+                });
+            });
+            $.getJSON(`data/data_agri_ladang.geojson`, function (data) {
+                data_layers['data_agri_ladang'] = L.geoJSON(data, {
+                    style: function (feature) {
+                        return {
+                            color: 'black',
+                            weight: 0.8,
+                            opacity: 0.5,
+                            fillOpacity: 0.5,
+                            fillColor: 'brown'
+                        };
+                    }
+                });
+            });
+
+
+            data_array.forEach((item) => {
+                $.getJSON(`data/${item}.geojson`, function (data) {
+                    data_layers[item] = L.geoJSON(data, {
+                        style: function (feature) {
+                            return {
+                                color: 'black',
+                                weight: 0.8,
+                                opacity: 0.5,
+                                fillOpacity: 0.5,
+                                fillColor: feature.properties.color
+                            };
+                        },
+                        onEachFeature: function (feature, layer) {
+                            // Isi informasi pada bindPopup
+                            var popupContent;
+                            if (item === 'data_admin_kecamatan') {
+                                popupContent = "<b>Kecamatan:</b> " + feature.properties.NAMOBJ + "<br>" +
+                                    "<b>Kabupaten/Kota:</b> " + feature.properties.WADMKK + "<br>" +
+                                    "<b>Provinsi:</b> " + feature.properties.WADMPR + "<br>";
+                                layer.bindPopup(popupContent);
+                            } else {
+                                popupContent = "<b>Kabupaten/Kota:</b> " + feature.properties.NAMOBJ + "<br>" +
+                                    "<b>Provinsi: Lampung</b> " + "<br>";
+                                layer.bindPopup(popupContent);
+                            } 
+                        }
+                    });
+                });
+            })
+            $('.peta_data').change(function () {
+                var el = $(this);
+                var value = el.val();
+
+                if (layerGroup.hasLayer(data_layers[value])) {
+                    layerGroup.removeLayer(data_layers[value]);
+                } else {
+                    layerGroup.addLayer(data_layers[value]).addTo(map);
+                }
+            })
+        })
+    </script>
+</body>
+</html>
